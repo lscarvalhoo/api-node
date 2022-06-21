@@ -4,9 +4,8 @@ import { createTable, createUser, updateUser, selectAllUser, selectUser, deleteU
 const router = Router();
 
 router.get('/pessoas', selectAllUser);
-
-router.post('/pessoa', createUser);
 router.get('/pessoa', selectUser);
+router.post('/pessoa', createUser);
 router.put('/pessoa', updateUser);
 router.delete('/pessoa', deleteUser);
 

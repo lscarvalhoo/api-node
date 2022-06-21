@@ -6,22 +6,6 @@ export async function createTable(){
     })
 }
 
-export async function createUser(pessoa){
-    openDb()
-        .then(db => {
-        db.run('INSERT INTO Pessoa (name, bio, phone, email, password) VALUES (?, ?, ?, ?, ?)', 
-                            pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password);
-    });
-}
-
-export async function updateUser(pessoa){
-    openDb()
-        .then(db => {
-        db.run('UPDATE Pessoa SET name = ?, bio = ?, phone = ?, email = ? , password = ? WHERE id = ?', 
-                            pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password, pessoa.id);
-    });
-}
-
 export async function selectAllUser(request, response){
     openDb().then(db => {
        db.all('SELECT * FROM Pessoa')
@@ -29,18 +13,45 @@ export async function selectAllUser(request, response){
     });
 }
 
-export async function selectUser(req, res){
-    let id = req.body.id;
-    
-     openDb().then(db => {
+export async function selectUser(request, response){
+    let id = request.body.id;
+
+    openDb().then(db => {
         db.get('SELECT * FROM Pessoa WHERE id = ?', id)
-        .then(res => res);
+        .then(pessoa => response.json(pessoa));
     });
 }
 
-export async function deleteUser(id){
-    return openDb().then(db => {
-       return db.get('DELETE FROM Pessoa WHERE id = ?', id)
-        .then(res => res);
+export async function createUser(request, response){
+    let pessoa = request.body;
+    openDb()
+        .then(db => {
+        db.run('INSERT INTO Pessoa (name, bio, phone, email, password) VALUES (?, ?, ?, ?, ?)', 
+                            pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password);
+    });
+
+    response.json({
+        "statusCode" : 200
+    })
+}
+
+export async function updateUser(request, response){
+    let pessoa = request.body;
+    openDb()
+        .then(db => {
+        db.run('UPDATE Pessoa SET name = ?, bio = ?, phone = ?, email = ? , password = ? WHERE id = ?', 
+                            pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password, pessoa.id);
+    });
+
+    response.json({
+        "statusCode" : 200
+    })
+} 
+
+export async function deleteUser(request, response){
+    let id = request.body.id; 
+    openDb().then(db => {
+        db.get('DELETE FROM Pessoa WHERE id = ?', id)
+        .then(pessoa => response.json(pessoa));
     });
 }
