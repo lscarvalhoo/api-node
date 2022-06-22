@@ -2,7 +2,7 @@ import { openDb } from "../configDB.js";
 
 export async function createTable(){
     openDb().then(db => {
-        db.exec('CREATE TABLE Pessoa(id INTEGER PRIMARY KEY, name TEXT, bio TEXT, phone INTEGER, email TEXT, password TEXT)')
+        db.exec('CREATE TABLE IF NOT EXIST Pessoa(id INTEGER PRIMARY KEY, name TEXT, bio TEXT, phone INTEGER, email TEXT, password TEXT)')
     })
 }
 
@@ -24,8 +24,7 @@ export async function selectUser(request, response){
 
 export async function createUser(request, response){
     let pessoa = request.body;
-    openDb()
-        .then(db => {
+    openDb().then(db => {
         db.run('INSERT INTO Pessoa (name, bio, phone, email, password) VALUES (?, ?, ?, ?, ?)', 
                             pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password);
     });
@@ -37,8 +36,7 @@ export async function createUser(request, response){
 
 export async function updateUser(request, response){
     let pessoa = request.body;
-    openDb()
-        .then(db => {
+    openDb().then(db => {
         db.run('UPDATE Pessoa SET name = ?, bio = ?, phone = ?, email = ? , password = ? WHERE id = ?', 
                             pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password, pessoa.id);
     });
