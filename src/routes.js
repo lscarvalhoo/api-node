@@ -1,12 +1,10 @@
 import { Router } from "express";
-import { createTable, createUser, updateUser, selectAllUser, selectUser, deleteUser } from './Controller/Pessoa.js';
+import { createTable, createUser, updateUser, login } from './Controller/Pessoa.js';
 
 const router = Router();
 
-router.get('/pessoas', selectAllUser);
-router.get('/pessoa', selectUser);
-router.post('/pessoa', createUser); 
-router.put('/pessoa', updateUser);
-router.delete('/pessoa', deleteUser);
+router.get('/login', login);
+router.post('/createUser', createUser); 
+router.put('/updateUser', updateUser); 
 
 export default router;

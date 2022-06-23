@@ -1,4 +1,6 @@
 import { openDb } from "../configDB.js";
+import jwt from 'jsonwebtoken' 
+
 
 export async function createTable(){
     openDb().then(db => {
@@ -6,50 +8,63 @@ export async function createTable(){
     })
 }
 
-export async function selectAllUser(request, response){
+export async function login(request, response){
+    let email = request.body.email;
+    let password = request.body.password;
+    let token = jwt.sign({ 
+        email 
+    },'KEY',
+    {
+        expiresIn: "1h"
+    })
+    
     openDb().then(db => {
-       db.all('SELECT * FROM Pessoa')
-       .then(pessoas => response.json(pessoas));
-    });
-}
-
-export async function selectUser(request, response){
-    let id = request.body.id;
-
-    openDb().then(db => {
-        db.get('SELECT * FROM Pessoa WHERE id = ?', id)
-        .then(pessoa => response.json(pessoa));
+        db.get('SELECT * FROM Pessoa WHERE email = ? AND password = ?', email, password)
+        .then(pessoa => response.json({
+            pessoa, token
+        }));
     });
 }
 
 export async function createUser(request, response){
     let pessoa = request.body;
+    let email = pessoa.email;
+    let token = jwt.sign({ 
+        email 
+    },'KEY',
+    {
+        expiresIn: "1h"
+    })
     openDb().then(db => {
         db.run('INSERT INTO Pessoa (name, bio, phone, email, password) VALUES (?, ?, ?, ?, ?)', 
-                            pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password);
+                            null, null, null, pessoa.email, pessoa.password);
     });
 
     response.json({
-        "statusCode" : 200
+        "statusCode" : 200,
+        "message" : "Usuario Criado com Sucesso !",
+        token
     })
 }
 
 export async function updateUser(request, response){
     let pessoa = request.body;
+    let email = pessoa.email;
+    console.log(pessoa)
+    let token = jwt.sign({ 
+        email 
+    },'KEY',
+    {
+        expiresIn: "1h"
+    })
     openDb().then(db => {
         db.run('UPDATE Pessoa SET name = ?, bio = ?, phone = ?, email = ? , password = ? WHERE id = ?', 
                             pessoa.name, pessoa.bio, pessoa.phone, pessoa.email, pessoa.password, pessoa.id);
     });
 
     response.json({
-        "statusCode" : 200
+        "statusCode" : 200,
+        "message" : "Usuario Alterado com Sucesso !",
+        token
     })
 } 
-
-export async function deleteUser(request, response){
-    let id = request.body.id; 
-    openDb().then(db => {
-        db.get('DELETE FROM Pessoa WHERE id = ?', id)
-        .then(pessoa => response.json(pessoa));
-    });
-}
