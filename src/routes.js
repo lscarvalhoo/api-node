@@ -3,7 +3,7 @@ import { createTable, createUser, updateUser, login } from './Controller/Pessoa.
 
 const router = Router();
 
-router.get('/login', login);
+router.post('/login', login);
 router.post('/createUser', createUser); 
 router.put('/updateUser', updateUser); 
 
