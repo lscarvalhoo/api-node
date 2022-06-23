@@ -1,5 +1,6 @@
 import { addEvent } from "../libraries/method-lib.js";
 import changeContent from "./change-content.js";
+import initProfile from "./profile.js";
 
 export default function initLogin() {
   const registerArrow = document.querySelector('#register-arrow');
@@ -26,6 +27,7 @@ export default function initLogin() {
     if (requestJson.logged) {
       localStorage.token = requestJson.token;
       changeContent('profile');
+      initProfile();
     } else {
       alert('E-mail or password incorrect, please try again');
     };
