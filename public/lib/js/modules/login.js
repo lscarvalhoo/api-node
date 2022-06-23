@@ -26,6 +26,7 @@ export default function initLogin() {
     console.log(requestJson)
     if (requestJson.logged) {
       localStorage.token = requestJson.token;
+      localStorage.userName = requestJson.pessoa.name;
       changeContent('profile');
       initProfile();
     } else {
