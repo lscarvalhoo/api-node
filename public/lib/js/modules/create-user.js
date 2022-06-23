@@ -34,7 +34,7 @@ export default function initCreate() {
           headers: new Headers({
             'Content-Type': 'application/json',
           }),
-        });
+        }); 
 
         if (request.ok) {
           alert('Successfully registered, please make login');
