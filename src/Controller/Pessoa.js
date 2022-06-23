@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 export async function createTable() {
     openDb().then(db => {
-        db.exec('CREATE TABLE IF NOT EXIST Pessoa(id INTEGER PRIMARY KEY, name TEXT, bio TEXT, phone INTEGER, email TEXT, password TEXT)')
+        db.exec('CREATE TABLE Pessoa(id INTEGER PRIMARY KEY, name TEXT, bio TEXT, phone INTEGER, email TEXT, password TEXT)')
     })
 }
 
