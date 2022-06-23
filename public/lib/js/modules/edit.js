@@ -7,7 +7,7 @@ export default function initEdit() {
   const bio = document.querySelector('#edit-bio'); 
   const phone = document.querySelector('#edit-phone'); 
   const email = document.querySelector('#edit-email'); 
-  const password = document.querySelector('#login-password');
+  const password = document.querySelector('#edit-password');
   const editButton = document.querySelector('.button-edit');
 
   let userNameValue = email.value;

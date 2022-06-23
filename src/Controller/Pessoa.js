@@ -77,7 +77,8 @@ export async function createUser(request, response) {
 
 export async function updateUser(request, response) {
     let pessoa = request.body;
-    let email = pessoa.email;
+    verifyFields();
+
     let token = jwt.sign({
         email
     }, 'KEY',
@@ -94,4 +95,12 @@ export async function updateUser(request, response) {
         "message": "Usuario Alterado com Sucesso !",
         token
     })
+
+    function verifyFields() {
+        if (pessoa.name === null || pessoa.bio === null || pessoa.phone === null || pessoa.email === null || pessoa.password === null) {
+            response.json({
+                message: "Necessario preencher todos os campos"
+            });
+        }
+    }
 } 
