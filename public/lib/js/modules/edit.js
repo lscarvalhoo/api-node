@@ -9,6 +9,7 @@ export default function initEdit() {
   const email = document.querySelector('#edit-email');
   const password = document.querySelector('#edit-password');
 
+
   async function editProfile() {
     const userName = document.querySelector('#edit-username');
     const bio = document.querySelector('#edit-bio');
