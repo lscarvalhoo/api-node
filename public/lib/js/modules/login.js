@@ -20,8 +20,7 @@ export default function initLogin() {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    });
-    console.log(request)
+    }); 
 
     if (request.ok) {
       const requestJson = await request.json();
