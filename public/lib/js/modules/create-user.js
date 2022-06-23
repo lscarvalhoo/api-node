@@ -10,11 +10,9 @@ export default function initCreate() {
   let passwordValue = email.value;
 
   async function createUser() {
-    const email = document.formCreateUser.email.value;
-    console.log(email)
+    const email = document.formCreateUser.email.value; 
     const password = document.formCreateUser.password.value;
-    const data = { email, password };
-    console.log(data)
+    const data = { email, password }; 
 
     const verifyEmail = await fetch('/verifyEmail', {
       method: 'POST',
