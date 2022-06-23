@@ -10,24 +10,25 @@ export async function createTable() {
 export async function login(request, response) {
     let email = request.body.email;
     let password = request.body.password;
-    let token = jwt.sign({ email }, 'KEY',
-        {
-            expiresIn: "1h"
-        })
-    try {
-        openDb().then(db => {
-            db.get('SELECT * FROM Pessoa WHERE email = ? AND password = ?', email, password)
-                .then(pessoa => response.json({
-                    pessoa, token
-                }));
+    let logged;
+    let token = jwt.sign({ email }, 'KEY', { expiresIn: "1h" })
+    openDb().then(db => {
+        db.get('SELECT * FROM Pessoa WHERE email = ? AND password = ?', email, password)
+        .then(pessoa => {
+            if (pessoa !== null)
+                logged = true;
+            response.json({
+                pessoa, token, logged
+            })
+        }).catch(() => {
+            response.json({
+                logged: false
+            })
         });
-    }
-    catch {
-        return "ERRO!"
-    }
+    }); 
 }
 
-export async function verifyEmail(request, response) { 
+export async function verifyEmail(request, response) {
     let email = request.body.email;
     let isMember;
     openDb().then(db => {
@@ -70,7 +71,7 @@ export async function createUser(request, response) {
 
 export async function updateUser(request, response) {
     let pessoa = request.body;
-    let email = pessoa.email; 
+    let email = pessoa.email;
     let token = jwt.sign({
         email
     }, 'KEY',
