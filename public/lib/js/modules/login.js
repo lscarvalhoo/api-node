@@ -13,7 +13,7 @@ export default function initLogin() {
   async function login() {
     const email = document.formLogin.email.value;
     const password = document.formLogin.password.value;
-    const data = { email, password }; 
+    const data = { email, password };
 
     const request = await fetch('/login', {
       method: 'POST',
@@ -21,12 +21,14 @@ export default function initLogin() {
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    }); 
+    });
     const requestJson = await request.json();
     console.log(requestJson)
     if (requestJson.logged) {
       localStorage.token = requestJson.token;
       localStorage.userName = requestJson.pessoa.name;
+
+      console.log(requestJson)
       changeContent('profile');
       initProfile();
     } else {
