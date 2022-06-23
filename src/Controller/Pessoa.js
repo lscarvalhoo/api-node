@@ -1,7 +1,6 @@
 import { openDb } from "../configDB.js";
 import jwt from 'jsonwebtoken' 
 
-
 export async function createTable(){
     openDb().then(db => {
         db.exec('CREATE TABLE IF NOT EXIST Pessoa(id INTEGER PRIMARY KEY, name TEXT, bio TEXT, phone INTEGER, email TEXT, password TEXT)')
@@ -11,19 +10,21 @@ export async function createTable(){
 export async function login(request, response){
     let email = request.body.email;
     let password = request.body.password;
-    let token = jwt.sign({ 
-        email 
-    },'KEY',
+    let token = jwt.sign({email},'KEY',
     {
         expiresIn: "1h"
     })
-    
+    try {
     openDb().then(db => {
         db.get('SELECT * FROM Pessoa WHERE email = ? AND password = ?', email, password)
         .then(pessoa => response.json({
             pessoa, token
         }));
     });
+    }
+    catch{
+        return "ERRO!"
+    }
 }
 
 export async function createUser(request, response){
