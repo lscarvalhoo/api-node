@@ -14,18 +14,24 @@ export async function login(request, response) {
     let token = jwt.sign({ email }, 'KEY', { expiresIn: "1h" })
     openDb().then(db => {
         db.get('SELECT * FROM Pessoa WHERE email = ? AND password = ?', email, password)
-        .then(pessoa => {
-            if (pessoa !== null)
-                logged = true;
-            response.json({
-                pessoa, token, logged
-            })
-        }).catch(() => {
+            .then(pessoa => {
+                console.log(pessoa)
+                if (pessoa !== undefined) {
+                    logged = true;
+                    response.json({
+                        pessoa, token, logged
+                    })
+            } else {
             response.json({
                 logged: false
             })
-        });
-    }); 
+        }
+    }).catch(() => {
+        response.json({
+            logged: false
+        })
+    });
+}); 
 }
 
 export async function verifyEmail(request, response) {

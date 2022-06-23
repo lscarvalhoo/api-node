@@ -21,14 +21,14 @@ export default function initLogin() {
         'Content-Type': 'application/json',
       }),
     }); 
-
-    if (request.ok) {
-      const requestJson = await request.json();
+    const requestJson = await request.json();
+    console.log(requestJson)
+    if (requestJson.logged) {
       localStorage.token = requestJson.token;
       changeContent('profile');
     } else {
       alert('E-mail or password incorrect, please try again');
-    }
+    };
   }
 
   email.addEventListener('focus', () => {
