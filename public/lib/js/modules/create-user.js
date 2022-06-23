@@ -11,24 +11,26 @@ export default function initCreate() {
 
   async function createUser() {
     const email = document.formCreateUser.email.value;
+    console.log(email)
     const password = document.formCreateUser.password.value;
     const data = { email, password };
+    console.log(data)
 
-    const response = await fetch('', {
+    const verifyEmail = await fetch('/verifyEmail', {
       method: 'POST',
-      body: JSON.stringify(email),
+      body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
-    });
+    }); 
 
-    if (response.ok) {
-      const responseJson = await response.json();
+    if (verifyEmail.ok) {
+      const responseJson = await verifyEmail.json(); 
 
       if (responseJson.isMember) {
         alert('this email is already registered, please enter with another email or make login');
       } else {
-        const request = await fetch('', {
+        const request = await fetch('/createUser', {
           method: 'POST',
           body: JSON.stringify(data),
           headers: new Headers({
@@ -61,7 +63,9 @@ export default function initCreate() {
   password.addEventListener('blur', () => {
     if (password.value === '')
       password.value = passwordValue;
-  });
+  }); 
+
+  addEvent(createButton, createUser);
 
   loginArrow.addEventListener('click', (event) => {
     event.preventDefault();
